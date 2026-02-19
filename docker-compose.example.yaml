@@ -1,0 +1,22 @@
+# Example snippet for the portfolio
+services:
+  paperless:
+    image: ghcr.io/paperless-ngx/paperless-ngx:latest
+    networks:
+      - internal_bridge
+    volumes:
+      - ./data:/usr/src/paperless/data
+      - ./media:/usr/src/paperless/media
+    environment:
+      PAPERLESS_OCR_LANGUAGE: deu+eng
+
+  # Cloudflare Tunnel Client
+  tunnel:
+    image: cloudflare/cloudflared:latest
+    command: tunnel run --token ${TUNNEL_TOKEN}
+    networks:
+      - internal_bridge
+
+networks:
+  internal_bridge:
+    driver: bridge
